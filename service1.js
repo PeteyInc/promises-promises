@@ -2,18 +2,23 @@ angular.module('app').service('service1', function($q, $timeout,$http){
     //Basic example
     
     this.getMeAUnicorn = function(){
-        //Create an object that can defer
-        var defer = $q.defer();
+        var deferredObject = $q.defer();
         
-        $http({
-            url: 'http://Russia/tastyFood',
-            method: 'GET'
-        }).then(function(response){
-            defer.resolve(response);
-        })
+        $timeout(function(){
+            
+            var boxOfToys = {
+                squirrels: "Nut breaking kind",
+                goldedGoose: "Really golden",
+                snozberries: "Super Snozzy"
+            }
+            
+            deferredObject.resolve(boxOfToys);
+            
+            //deferredObject.reject
+        }, 1);
+        //  
         
-        //use the object to return a promise
-        return defer.promise;
+        return deferredObject.promise;
     }
     
 });
@@ -21,25 +26,35 @@ angular.module('app').service('service1', function($q, $timeout,$http){
 
 
 angular.module('app').service('pokemonService', function($http, $q){
-    
     // Config example
-    var pokemon = null;
+    
+    //keep the pokemon we found
+    var pokeCenterPokemon = null;
     
     this.getPokemon = function(){
+        //defer
         var defer = $q.defer();
-        if(pokemon){
-            defer.resolve(pokemon);
-        } else {
-           $http.get('http://pokeapi.co/api/v2/pokemon/1/')
-               .then(function(response){
-                  pokemon = response.data;
-                  defer.resolve(response.data);
-               })
-        }
         
+        //if pokemeon
+        if(pokeCenterPokemon){
+            //resolve pokemon
+            defer.resolve(pokeCenterPokemon);   
+        }
+        else {
+        //else 
+            //http pokemon
+            var httpPromise = $http.get("http://pokeapi.co/api/v2/pokemon/1");
+                //resolve pokemon
+            
+            httpPromise.then(function(pokemon){
+                  defer.resolve(pokemon.data);
+                  pokeCenterPokemon = pokemon.data;
+            })
+        }
+    
+    //return promise
         return defer.promise;
     }
-   
 });
 
 angular.module('app').service('multiPointDataService', function($http, $q){

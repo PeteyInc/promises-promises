@@ -1,6 +1,6 @@
 angular.module('app').service('introvertSchedulingService', function($q, $timeout){
   
-  this.willHangOut = function(){
+  this.willHangOutWithMe = function(){
      
     var deferObj = $q.defer();
     var warm = false;
@@ -42,9 +42,9 @@ angular.module('app').service('introvertSchedulingService', function($q, $timeou
     function checkAllGood() {
         if(warmDone && dateDone && distanceDone){
             if(warm && date && distance){
-                deferObj.resolve(true);
+                deferObj.resolve("Yeah, let's hang out");
             } else {
-                deferObj.reject(true);
+                deferObj.reject("Sorry, no thanks");
             }
         }
     }
